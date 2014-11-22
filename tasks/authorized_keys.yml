@@ -1,0 +1,37 @@
+---
+
+# A missing key file indicates misconfiguration.
+# Lookup('file',...) returns an empty string if the file doesn't exist.
+- name: verify the key file exists
+  local_action: command test -r "{{ item.1.file }}"
+  with_subelements:
+    - users_and_groups.users
+    - ssh_keys
+  when: item.1.state|default('present') == 'present'
+  changed_when: False
+
+
+- name: enable ssh keys for users
+  authorized_key:
+  args:
+    state: "{{item.1.state | default('present') }}"
+    user: "{{item.0.name}}"
+    key: "{{ lookup('file', item.1.file ) }}"
+    manage_dir: "{{item.1.manage_dir | default('yes') }}"
+    key_options: "{{item.1.key_options | default('') }}"
+  with_subelements:
+    - users_and_groups.users
+    - ssh_keys
+  when: item.1.state|default('present') == 'present'
+
+
+- name: disable ssh keys for users
+  authorized_key:
+  args:
+    state: "{{item.1.state | default('present') }}"
+    user: "{{item.0.name}}"
+    key: "{{ lookup('file', item.1.file ) }}"
+  with_subelements:
+    - users_and_groups.users
+    - ssh_keys
+  when: item.1.state|default('present') == 'absent'

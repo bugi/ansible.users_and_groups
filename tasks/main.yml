@@ -1,0 +1,28 @@
+---
+
+- include: group.without.gid.yml
+- include: group.with.gid.yml
+
+
+- name: make sure removed groups are not present
+  group: name={{item.name}} state=absent
+  with_items: users_and_groups.groups_removed
+
+
+- include: user.without.uid.yml
+- include: user.with.uid.yml
+
+
+- name: set user primary group if set
+  user:
+  args:
+    name: "{{ item.name }}"
+    group: "{{ item.group }}"
+    state: "{{item.state | default('present') }}"
+  with_items: users_and_groups.users
+  when: item.group is defined
+
+
+
+- include: user.removal.yml
+- include: authorized_keys.yml

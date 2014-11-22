@@ -1,0 +1,45 @@
+---
+
+# The user.uid.yml and user.nouid.yml should be almost identical.
+# They should differ only by name, uid and when.
+
+# There's no good default for uid, so instead we duplicate a bunch of code. :(
+
+# The ssh_key_* and login_class args are not supported.  Please send a patch.
+
+# Setting primary group is handled by a separate task.
+
+# User removal is handled by separate tasks.
+
+
+- name: make sure users are present (with uid)
+  user:
+#   login_class: "{{item.login_class | default(None) }}"
+#   ssh_key_bits: "{{item.ssh_key_bits | default(None) }}"
+#   ssh_key_comment: "{{item.ssh_key_comment | default(None) }}"
+#   ssh_key_file: "{{item.ssh_key_file | default(None) }}"
+#   ssh_key_passphrase: "{{item.ssh_key_passphrase | default(None) }}"
+#   ssh_key_type: "{{item.ssh_key_type | default(None) }}"
+#   group: "{{item.group | default(item.name) }}"
+  args:
+    uid: "{{ item.uid }}"
+    name: "{{ item.name }}"
+    state: "{{item.state | default('present') }}"
+    append: "{{item.append | default('no') }}"
+    comment: "{{item.comment | default(None) }}"
+    createhome: "{{item.createhome | default('yes') }}"
+#   force: "{{item.force | default('no') }}"
+    password: "{{item.password | default('*') }}"
+    # user definitions are required to set groups, even if just as []
+    groups: "{{','.join(item.groups)}}"
+    generate_ssh_key: "{{item.generate_ssh_key | default('no') }}"
+    home: "{{ item.home | default(users_and_groups_defaults.home_prefix + '/' + item.name) }}"
+    move_home: "{{item.move_home | default('no') }}"
+    non_unique: "{{item.non_unique | default('no') }}"
+#   remove: "{{item.remove | default('no') }}"
+    shell: "{{item.shell | default(users_and_groups_defaults.shell) }}"
+    system: "{{item.system | default('no') }}"
+    update_password: "{{item.update_password | default('always') }}"
+  with_items: users_and_groups.users
+  when: item.uid is defined and item.state|default('present') == 'present'
+# when: item.uid is not defined and item.state|default('present') == 'present'

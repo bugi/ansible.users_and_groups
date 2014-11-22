@@ -1,0 +1,22 @@
+---
+
+# some might want to just maintain the user records
+- name: remove users using USERS
+  user:
+  args:
+    name: "{{ item.name }}"
+    state: "{{item.state | default('present') }}"
+    force: "{{item.force | default('no') }}"
+    remove: "{{item.remove | default('no') }}"
+  with_items: users_and_groups.users
+  when: item.state|default('present') == 'absent'
+
+# but for many users, it's probably easier to just keep a seprate list of removed users
+- name: remove users using USERS_REMOVED
+  user:
+  args:
+    name: "{{ item.name }}"
+    state: absent
+    force: "{{item.force | default('no') }}"
+    remove: "{{item.remove | default('no') }}"
+  with_items: users_and_groups.users_removed

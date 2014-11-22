@@ -1,0 +1,14 @@
+---
+
+# The group.with.gid.yml and group.without.gid.yml should be almost identical.
+
+- name: make sure groups are present (no gid)
+  group:
+  args:
+#   gid: "{{ item.gid }}"
+    name: "{{ item.name }}"
+    state: "{{item.state | default('present') }}"
+    system: "{{item.system | default('no') }}"
+  with_items: users_and_groups.groups
+# when: item.gid is defined
+  when: item.gid is not defined
