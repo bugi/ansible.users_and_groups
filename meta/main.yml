@@ -1,0 +1,35 @@
+---
+
+galaxy_info:
+  author: Brian Grossman
+  description: treat users, groups and ssh public keys as data
+  license: MIT
+  min_ansible_version: 1.7
+
+  platforms:
+  - name: EL
+    versions:
+    - all
+  - name: Fedora
+    versions:
+    - all
+  - name: opensuse
+    versions:
+    - all
+  - name: Ubuntu
+    versions:
+    - all
+  - name: SLES
+    versions:
+    - all
+  - name: GenericLinux
+    versions:
+    - all
+  - name: Debian
+    versions:
+    - all
+  
+  categories:
+  - system
+
+dependencies: []
