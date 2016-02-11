@@ -37,7 +37,7 @@ Here's a likely playbook.  I'll get to the vars\_files later:
     - vars/users/alice.yml
     - vars/users/bob.yml
   roles:
-    - { role: users_and_groups , users_and_groups: "{{ users_and_groups }}" }
+    - { role: bugi.users_and_groups , users_and_groups: "{{ users_and_groups }}" }
 ```
 
 You'd probably define the `users_and_groups` variable in a host\_vars file.
@@ -92,7 +92,7 @@ user_alice:
   uid: 1000
   groups: [ adm , sudo ]
   append: yes
-  password: '$6$encrypted_password'
+  password: '$6$encrypted_password' # Generate with mkpasswd --method=SHA-512
   shell: /bin/bash
   update_password: on_create
   ssh_keys:
