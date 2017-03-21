@@ -8,8 +8,8 @@
     state: "{{item.state | default('present') }}"
     force: "{{item.force | default('no') }}"
     remove: "{{item.remove | default('no') }}"
-  with_items: users_and_groups.users
-  when: item.state|default('present') == 'absent'
+  with_items: '{{ users_and_groups.users }}'
+  when: "{{ item.state|default('present') == 'absent' }}"
 
 # but for many users, it's probably easier to just keep a seprate list of removed users
 - name: remove users using USERS_REMOVED
@@ -19,4 +19,4 @@
     state: absent
     force: "{{item.force | default('no') }}"
     remove: "{{item.remove | default('no') }}"
-  with_items: users_and_groups.users_removed
+  with_items: '{{ users_and_groups.users_removed }}'

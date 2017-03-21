@@ -40,6 +40,6 @@
     shell: "{{item.shell | default(users_and_groups_defaults.shell) }}"
     system: "{{item.system | default('no') }}"
     update_password: "{{item.update_password | default('always') }}"
-  with_items: users_and_groups.users
-  when: item.uid is defined and item.state|default('present') == 'present'
+  with_items: '{{ users_and_groups.users }}'
+  when: "{{ item.uid is defined and item.state|default('present') == 'present' }}"
 # when: item.uid is not defined and item.state|default('present') == 'present'
