@@ -9,6 +9,6 @@
     name: "{{ item.name }}"
     state: "{{item.state | default('present') }}"
     system: "{{item.system | default('no') }}"
-  with_items: users_and_groups.groups
+  with_items: '{{ users_and_groups.groups }}'
 # when: item.gid is defined
-  when: item.gid is not defined
+  when: '{{ item.gid is not defined }}'

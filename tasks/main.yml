@@ -6,7 +6,7 @@
 
 - name: make sure removed groups are not present
   group: name={{item.name}} state=absent
-  with_items: users_and_groups.groups_removed
+  with_items: '{{ users_and_groups.groups_removed }}'
 
 
 - include: user.without.uid.yml
@@ -19,8 +19,8 @@
     name: "{{ item.name }}"
     group: "{{ item.group }}"
     state: "{{item.state | default('present') }}"
-  with_items: users_and_groups.users
-  when: item.group is defined
+  with_items: '{{ users_and_groups.users }}'
+  when: '{{ item.group is defined }}'
 
 
 
