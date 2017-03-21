@@ -7,7 +7,7 @@
   with_subelements:
     - '{{ users_and_groups.users }}'
     - '{{ ssh_keys }}'
-  when: "{{ item.1.state|default('present') == 'present' }}"
+  when: "{{ users_and_groups.users|default(None) and item.1.state|default('present') == 'present' }}"
   changed_when: False
 
 
@@ -22,7 +22,7 @@
   with_subelements:
     - '{{ users_and_groups.users }}'
     - '{{ ssh_keys }}'
-  when: "{{ item.1.state|default('present') == 'present' }}"
+  when: "{{ users_and_groups.users|default(None) and item.1.state|default('present') == 'present' }}"
 
 
 - name: disable ssh keys for users
@@ -34,4 +34,4 @@
   with_subelements:
     - '{{ users_and_groups.users }}'
     - '{{ ssh_keys }}'
-  when: "{{ item.1.state|default('present') == 'absent' }}"
+  when: "{{ users_and_groups.users|default(None) and item.1.state|default('present') == 'absent' }}"
